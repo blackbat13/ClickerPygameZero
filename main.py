@@ -85,7 +85,7 @@ def draw_list(list):
 
 def draw_points():
     if cursor.points <= 10**9:
-        screen.draw.text(f"{cursor.points}$", center=(
+        screen.draw.text(f"{cursor.points:,}$", center=(
             (WIDTH-MARGIN) / 2, 50), fontsize=60, color="#fdee00")
     else:
         screen.draw.text(f"{cursor.points:.2e}$", center=(
