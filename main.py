@@ -3,11 +3,15 @@ import random
 import pgzrun
 import pygame
 
+"""CONFIGURATION"""
+
 TITLE = "Pig Hunt"
 WIDTH = 1200
 HEIGHT = 800
 PANEL = 400
 BTN_MARGIN = 72
+
+"""VARIABLES"""
 
 vegie_list = [Actor("beetroot", (200, 200))]
 
@@ -83,10 +87,12 @@ radish_points_btn.x = WIDTH - (PANEL / 2)
 radish_points_btn.y = 40 + BTN_MARGIN * 9
 radish_points_btn.cost = 450
 
-mouse_buy_btn = Actor("button")
-mouse_buy_btn.x = WIDTH - (PANEL / 2)
-mouse_buy_btn.y = 40 + BTN_MARGIN * 10
-mouse_buy_btn.cost = 100000
+multiplier_buy_btn = Actor("button")
+multiplier_buy_btn.x = WIDTH - (PANEL / 2)
+multiplier_buy_btn.y = 40 + BTN_MARGIN * 10
+multiplier_buy_btn.cost = 100000
+
+"""DRAW"""
 
 
 def draw():
@@ -105,48 +111,47 @@ def draw_list(list):
 
 
 def draw_points():
-    if cursor.points <= 10 ** 9:
-        screen.draw.text(f"{cursor.points:,}$", center=(
-            (WIDTH - PANEL) / 2, 50), fontsize=60, color="#fdee00")
-    else:
-        screen.draw.text(f"{cursor.points:.2e}$", center=(
-            (WIDTH - PANEL) / 2, 50), fontsize=60, color="#fdee00")
+    screen.draw.text(f"{big_number_to_text(cursor.points)}$", center=(
+        (WIDTH - PANEL) / 2, 50), fontsize=60, color="#fdee00")
 
 
 def draw_buttons():
     beet_points_btn.draw()
-    screen.draw.text(f"Beet points: {cursor.beet_p * cursor.all_multiplier * cursor.beet_multiplier}->{(cursor.beet_p + 1) * cursor.all_multiplier * cursor.beet_multiplier}\n{beet_points_btn.cost:,}$",
+    screen.draw.text(f"Beet points: {big_number_to_text(cursor.beet_p * cursor.all_multiplier * cursor.beet_multiplier)}->{big_number_to_text((cursor.beet_p + 1) * cursor.all_multiplier * cursor.beet_multiplier)}\n{big_number_to_text(beet_points_btn.cost)}$",
                      center=beet_points_btn.pos, fontsize=25, color="white")
     pig_vel_btn.draw()
-    screen.draw.text(f"Pig speed: {cursor.pig_v:.1f}->{(cursor.pig_v + 0.2):.1f}\n{pig_vel_btn.cost:,}$",
+    screen.draw.text(f"Pig speed: {cursor.pig_v:.1f}->{(cursor.pig_v + 0.2):.1f}\n{big_number_to_text(pig_vel_btn.cost)}$",
                      center=pig_vel_btn.pos, fontsize=25, color="white")
     beet_buy_btn.draw()
-    screen.draw.text(f"New beet\n{beet_buy_btn.cost:,}$",
+    screen.draw.text(f"New beet\n{big_number_to_text(beet_buy_btn.cost)}$",
                      center=beet_buy_btn.pos, fontsize=25, color="white")
     pig_buy_btn.draw()
-    screen.draw.text(f"New pig (beet points * 2)\n{pig_buy_btn.cost:,}$",
+    screen.draw.text(f"New pig (beet points * 2)\n{big_number_to_text(pig_buy_btn.cost)}$",
                      center=pig_buy_btn.pos, fontsize=25, color="white")
     carrot_buy_btn.draw()
-    screen.draw.text(f"New carrot\n{carrot_buy_btn.cost:,}$",
+    screen.draw.text(f"New carrot\n{big_number_to_text(carrot_buy_btn.cost)}$",
                      center=carrot_buy_btn.pos, fontsize=25, color="white")
     carrot_points_btn.draw()
-    screen.draw.text(f"Carrot points: {cursor.carrot_p * cursor.all_multiplier * cursor.carrot_multiplier}->{(cursor.carrot_p * 2) * cursor.all_multiplier * cursor.carrot_multiplier}\n{carrot_points_btn.cost:,}$",
+    screen.draw.text(f"Carrot points: {big_number_to_text(cursor.carrot_p * cursor.all_multiplier * cursor.carrot_multiplier)}->{big_number_to_text((cursor.carrot_p * 2) * cursor.all_multiplier * cursor.carrot_multiplier)}\n{big_number_to_text(carrot_points_btn.cost)}$",
                      center=carrot_points_btn.pos, fontsize=25, color="white")
     rabbit_buy_btn.draw()
-    screen.draw.text(f"New rabbit (carrot points * 2)\n{rabbit_buy_btn.cost:,}$",
+    screen.draw.text(f"New rabbit (carrot points * 2)\n{big_number_to_text(rabbit_buy_btn.cost)}$",
                      center=rabbit_buy_btn.pos, fontsize=25, color="white")
     rabbit_vel_btn.draw()
-    screen.draw.text(f"Rabbit speed: {cursor.rabbit_v}->{cursor.rabbit_v + 3}\n{rabbit_vel_btn.cost:,}$",
+    screen.draw.text(f"Rabbit speed: {cursor.rabbit_v}->{cursor.rabbit_v + 3}\n{big_number_to_text(rabbit_vel_btn.cost)}$",
                      center=rabbit_vel_btn.pos, fontsize=25, color="white")
     radish_buy_btn.draw()
-    screen.draw.text(f"New radish\n{radish_buy_btn.cost:,}$",
+    screen.draw.text(f"New radish\n{big_number_to_text(radish_buy_btn.cost)}$",
                      center=radish_buy_btn.pos, fontsize=25, color="white")
     radish_points_btn.draw()
-    screen.draw.text(f"Radish points: {cursor.radish_p * cursor.all_multiplier}->{(cursor.radish_p * 4) * cursor.all_multiplier}\n{radish_points_btn.cost:,}$",
+    screen.draw.text(f"Radish points: {big_number_to_text(cursor.radish_p * cursor.all_multiplier)}->{big_number_to_text((cursor.radish_p * 4) * cursor.all_multiplier)}\n{big_number_to_text(radish_points_btn.cost)}$",
                      center=radish_points_btn.pos, fontsize=25, color="white")
-    mouse_buy_btn.draw()
-    screen.draw.text(f"New mouse (all points * 2)\n{mouse_buy_btn.cost:,}$",
-                     center=mouse_buy_btn.pos, fontsize=25, color="white")
+    multiplier_buy_btn.draw()
+    screen.draw.text(f"All points * 2\n{big_number_to_text(multiplier_buy_btn.cost)}$",
+                     center=multiplier_buy_btn.pos, fontsize=25, color="white")
+
+
+"""UPDATE"""
 
 
 def update():
@@ -169,6 +174,9 @@ def update():
                 animal.vegie = random.choice(vegie_list)
 
 
+"""EVENTS"""
+
+
 def on_mouse_down(pos):
     if beet_points_btn.collidepoint(pos) and cursor.points >= beet_points_btn.cost:
         cursor.points -= beet_points_btn.cost
@@ -185,7 +193,7 @@ def on_mouse_down(pos):
             50, WIDTH - 50 - PANEL), random.randint(50, HEIGHT - 50))))
     if pig_buy_btn.collidepoint(pos) and cursor.points >= pig_buy_btn.cost:
         cursor.points -= pig_buy_btn.cost
-        pig_buy_btn.cost *=  2
+        pig_buy_btn.cost *= 2
         animal = Actor("pig_down")
         animal.x = random.randint(50, WIDTH - 50 - PANEL)
         animal.y = random.randint(50, HEIGHT - 50)
@@ -197,16 +205,16 @@ def on_mouse_down(pos):
         cursor.beet_multiplier += 1
     if carrot_buy_btn.collidepoint(pos) and cursor.points >= carrot_buy_btn.cost:
         cursor.points -= carrot_buy_btn.cost
-        carrot_buy_btn.cost *=  3
+        carrot_buy_btn.cost *= 3
         vegie_list.append(Actor("carrot", (random.randint(
             50, WIDTH - 50 - PANEL), random.randint(50, HEIGHT - 50))))
     if carrot_points_btn.collidepoint(pos) and cursor.points >= carrot_points_btn.cost:
         cursor.points -= carrot_points_btn.cost
-        carrot_points_btn.cost *=  5
+        carrot_points_btn.cost *= 5
         cursor.carrot_p *= 2
     if rabbit_buy_btn.collidepoint(pos) and cursor.points >= rabbit_buy_btn.cost:
         cursor.points -= rabbit_buy_btn.cost
-        rabbit_buy_btn.cost *=  4
+        rabbit_buy_btn.cost *= 4
         animal = Actor("rabbit_down")
         animal.x = random.randint(50, WIDTH - 50 - PANEL)
         animal.y = random.randint(50, HEIGHT - 50)
@@ -229,22 +237,17 @@ def on_mouse_down(pos):
         cursor.points -= radish_points_btn.cost
         radish_points_btn.cost += radish_points_btn.cost * 8
         cursor.radish_p *= 5
-    if mouse_buy_btn.collidepoint(pos) and cursor.points >= mouse_buy_btn.cost:
-        cursor.points -= mouse_buy_btn.cost
-        mouse_buy_btn.cost *= 10
-        animal = Actor("mouse_down")
-        animal.x = random.randint(50, WIDTH - 50 - PANEL)
-        animal.y = random.randint(50, HEIGHT - 50)
-        animal.vx = 0
-        animal.vy = 0
-        animal.type = "mouse"
-        animal.vegie = random.choice(vegie_list)
-        animal_list.append(animal)
-        cursor.all_multiplier += 1
+    if multiplier_buy_btn.collidepoint(pos) and cursor.points >= multiplier_buy_btn.cost:
+        cursor.points -= multiplier_buy_btn.cost
+        multiplier_buy_btn.cost **= 2
+        cursor.all_multiplier *= 2
 
 
 def on_mouse_move(pos):
     cursor.pos = pos
+
+
+"""HELPERS"""
 
 
 def bot(animal):
@@ -253,8 +256,6 @@ def bot(animal):
         v = cursor.pig_v
     if animal.type == "rabbit":
         v = cursor.rabbit_v
-    if animal.type == "mouse":
-        v = cursor.mouse_v
     if animal.x - animal.vegie.x >= v:
         animal.vx = -v
         animal.vy = 0
@@ -272,6 +273,15 @@ def bot(animal):
         animal.vy = v
         animal.image = animal.type + "_down"
 
+
+def big_number_to_text(number):
+    if number <= 10 ** 9:
+        return f"{number:,}"
+    else:
+        return f"{number:.2e}"
+
+
+"""INITIALIZATION"""
 
 pygame.mouse.set_visible(False)
 pgzrun.go()
